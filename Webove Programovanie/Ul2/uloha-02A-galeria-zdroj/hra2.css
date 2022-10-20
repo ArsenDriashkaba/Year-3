@@ -1,0 +1,76 @@
+body {
+  text-align: center;
+  margin: 2em;
+}
+
+.velky {
+  display: inline-block;
+  margin: 0 auto;
+  opacity: 1;
+  z-index: 100;
+}
+img {
+  position: relative;
+  cursor: pointer;
+  backface-visibility: hidden;
+  /*	backface-visibility: visible; */
+}
+figure {
+  display: inline-block;
+  width: 160px;
+  height: 120px;
+  overflow: hidden;
+  border: 5px solid #ccc;
+  margin: 0;
+  text-align: left;
+}
+figcaption {
+  background-color: #999;
+  margin-bottom: 5px;
+  height: 25px;
+}
+#obr2 {
+  width: 170px;
+  height: 130px;
+  overflow: hidden;
+  margin: auto;
+  border: 3px dotted black;
+  position: relative;
+  padding: 0;
+}
+#obr {
+  width: 850px;
+  border: 0px solid blue;
+  overflow: visible;
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  transition: 1s ease-in-out;
+}
+
+.animation {
+  animation-name: identifier;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes identifier {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-170px);
+  }
+  40% {
+    transform: translateX(-340px);
+  }
+  60% {
+    transform: translateX(-510px);
+  }
+  80% {
+    transform: translateX(-680px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

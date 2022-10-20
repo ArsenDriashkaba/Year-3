@@ -1,0 +1,55 @@
+body {
+	text-align: center;	
+	background-color: #a46740;
+	color: #ccc;
+}
+
+#game {
+	border: 1px solid #666;
+	
+	position: relative;
+	width: 500px;
+	height: 460px;
+	margin: 0 auto;
+/*
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+*/
+	-webkit-perspective: 600;
+  perspective: 600;
+}
+
+#cards {
+	position: relative;	
+	width: 380px;
+	height: 400px;
+}
+
+.card-back {
+	width: 80px;
+	height: 120px;
+	position: relative;
+	float: left;
+	cursor: pointer;
+	background-color: transparent;
+	border: 1px solid black;
+	backface-visibility: visible;
+/*	transition: all 2000ms; */
+}
+
+.card-flipped {
+	z-index: 100;
+	animation-name: pohyb;
+	animation-duration: 10s;
+	animation-iteration-count: 3;
+	animation-direction: alternate; /* normal | reverse | alternate | alternate-reverse */
+/*	animation-timing-function: linear; */
+}
+
+@keyframes pohyb {
+	 0% { background-color: red; left: 0px; top: 0px; }
+	25% { background-color: yellow; left: 82px; top: 0px; }
+	50% { background-color: blue; left: 82px; top: 122px; }
+	75% { background-color: green; left: 0px; top: 122px; }
+	100% { background-color: red; left: 0px; top: 0px; } 
+}

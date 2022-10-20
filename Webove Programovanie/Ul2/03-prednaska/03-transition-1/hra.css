@@ -1,0 +1,84 @@
+body {
+	text-align: center;	
+	background-color: #a46740;
+	color: #ccc;
+}
+
+#game {
+	border: 1px solid #666;
+	
+	position: relative;
+	width: 500px;
+	height: 460px;
+	margin: 0 auto;
+/*
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+*/
+	-webkit-perspective: 600;
+	perspective: 600;
+}
+
+#cards {
+	position: relative;	
+	width: 380px;
+	height: 400px;
+}
+
+.card-back {
+	width: 80px;
+	height: 120px;
+	position: relative;
+/*	float: left;*/
+	cursor: pointer;
+	backface-visibility: hidden;
+/*	backface-visibility: visible; */
+	opacity: 0.1;
+/*
+	transition-property: width; 
+	transition-property: all; 
+
+	transition-property: opacity;
+	transition-property: opacity, width;
+	transition-duration: 2s;
+	transition-timing-function: ease-out;
+	transition-delay: 0s;
+*/
+	transition: all 2s ease-out 0s; 
+/*
+	transition: all 2s ease-out 0s; 
+	transition: width 2s ease-out 0s; 
+	transition: opacity 2s ease-out 0s;
+*/
+}
+.card-back:hover {
+	width: 120px;
+/*	height: 180px; */
+	opacity: 1;
+}
+
+.card-flipped {
+	z-index: 100;
+	
+/*
+	transform-origin: 20% 20%;
+*/
+
+	transform: rotateY(75deg); 
+
+/*
+	transform: scale(1.5);
+	transform: scale(5, 2);
+
+	transform: rotate(45deg); 
+ 	transform: rotate(45deg) scale(1.5); 
+	transform: rotateY(60deg); 
+
+	transform: translateX(40px);
+	transform: translate(0, 60px);
+
+	transform: rotate3d(0,1,0,180deg);
+	transform: rotate3d(1,1,0,180deg);
+	transform: rotate3d(1,1,0,60deg);
+*/
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head> <meta charset="UTF-8"> </head>
+<body style="margin: 0; padding: 0; background-color:#AAFFFF">
+<canvas id="canvas" width=500 height=300></canvas>
+<p id="vypis"></p>
+<script>
+    var M = 5, N = 8, SIRKA = 50;
+ 
+    canvas = document.getElementById("canvas");
+    context = canvas.getContext("2d");
+    canvas.width = N*SIRKA;
+    canvas.height = M*SIRKA;
+    context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+ 
+    function genRandom(a, b) {
+    	return Math.floor((Math.random() * (b-a)) + a);
+	}
+
+    // sem príde zvyšok programu
+	
+    // trieda Svetlo
+    function Svetlo(r, s) {
+        this.r = r;
+        this.s = s;
+        this.stav = 0;
+    }
+
+   Svetlo.prototype.kresli = function() {
+        if (this.stav == 0)
+            context.fillStyle = "#AAAAAA";
+        else 
+            context.fillStyle = "yellow";
+        context.fillRect(this.s*SIRKA, this.r*SIRKA, SIRKA, SIRKA);
+        context.stokeStyle = "#000000";
+        context.rect(this.s*SIRKA, this.r*SIRKA, SIRKA, SIRKA);
+	  context.stroke();
+   }
+
+    Svetlo.prototype.zmen = function() {
+        this.stav = 1 - this.stav;
+    }
+
+var policko = [];
+for (var i = 0; i < M; i++) {
+    policko[i] = [];
+    for (var j = 0; j < N; j++) {
+         policko[i][j] = new Svetlo(i, j);
+    }
+}
+
+function kresli() {
+    for (var i = 0; i<M; i++) {
+       for (var j = 0; j<N; j++) {
+         policko[i][j].kresli();
+		}
+	}
+}
+
+function zmen(r, s) {
+    policko[r][s].zmen();
+    if (r>0) policko[r-1][s].zmen()
+    if (s>0) policko[r][s-1].zmen()
+    if (s<N-1) policko[r][s+1].zmen()
+    if (r<M-1) policko[r+1][s].zmen()    
+}
+
+function miesaj() {
+    for (var i=0; i<4; i++) {
+        var rr = genRandom(0, M);
+        var ss = genRandom(0, N);
+        zmen(rr,ss);
+    }
+}
+
+function kontrola() {
+	for (var i = 0; i<M; i++) {
+		for (var j = 0; j<N; j++) {
+			if (policko[i][j].stav == 1)
+				return;
+		}
+	}
+	document.getElementById("vypis").innerHTML = 'HOTOVO';
+}
+
+
+function klik(event) {
+    riadok = Math.floor(event.clientY / SIRKA);
+    stlpec = Math.floor(event.clientX / SIRKA);
+    zmen(riadok, stlpec);
+    kresli();
+    kontrola();
+}
+
+
+canvas.addEventListener("mousedown", klik);
+miesaj(); 
+kresli();
+ 
+</script>
+</body>
+</html>

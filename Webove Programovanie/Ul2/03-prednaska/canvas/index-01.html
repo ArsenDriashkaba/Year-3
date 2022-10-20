@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HTML5 - Canvas</title>
+<style>
+#platno {
+	background: #e0ffe0;
+}
+</style>
+</head>
+<body onload="kresli()">
+<header>
+<h1>HTML5 - Canvas</h1>
+</header>
+<section>
+<p>skúšajte meniť poradie príkazov a sledovať zmeny</p>
+<canvas id="platno" width="400" height="200">Váš prehliadač nepodporuje element Canvas</canvas>
+</section>
+<footer>
+<p>pokusy s Canvas-om</p>
+</footer>
+<script>
+function kresli() {
+	var canvas = document.getElementById("platno");
+	var context = canvas.getContext("2d");
+	context.strokeStyle = "#0000FF";
+	context.fillStyle = "#FFFF00";
+	context.lineWidth = 5;
+	context.strokeRect(10, 10 , 200, 50);
+	context.fillRect(20, 70 , 200, 50);
+	context.strokeRect(20, 70 , 200, 50);
+}
+</script>                                                               
+</body>
+</html>

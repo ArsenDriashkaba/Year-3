@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Chytaj</title>
+	<link rel="stylesheet" href="hra.css">
+<script>                                         
+
+function plocha() {	
+	var s = ''
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 4; j++) {
+			s += '<img src="obrazky/card-back.png" alt="" width="80" height="120" id="c'+(i*4+j)+'" class="card-back" onclick="klikaj(this)">'
+		}
+	}
+	document.getElementById('cards').innerHTML = s
+}
+
+function klikaj(co) {
+	document.getElementById(co.id).classList.toggle('card-flipped')
+}
+</script>                                                               
+</head>
+<body onload="plocha()">
+<header>
+	<h1>Chytaj</h1>
+</header>
+
+<!-- <div class="card-back"><img src="obrazky/card-back.png" alt="" width="80" height="120" id="c1"></div> -->	
+
+<section id="game">
+	<div id="body">počet bodov: <span id="bbody"></span></div> 
+	<div id="cards">
+	</div>				
+</section>
+	
+	<footer>
+		<p>vytvoril: </p>
+	</footer>
+
+</body>
+</html>
