@@ -2,11 +2,13 @@ from tkinter import filedialog
 import os
 from utils.geometryUi import drawObject
 from constants.app import *
+from models import Vertex4D
 
 INITIAL_OBJ_DIR = os.getcwd();
 
 def handleOpenExplorer():
     return filedialog.askopenfilename(initialdir=INITIAL_OBJ_DIR)
+
 
 def writeLineData(lineData, parsedData, isVertexData=True):
     arrOfData = []
@@ -28,7 +30,12 @@ def writeLineData(lineData, parsedData, isVertexData=True):
 
         arrOfData.append(elem)
 
+    if isVertexData:
+        newVertex = Vertex4D(*tuple(arrOfData), 1)
+        arrOfData = newVertex
+
     parsedData[dataKey].append(arrOfData)
+
 
 def handleParsingLine(line, parsedData):
     lineData = line.strip().split(" ");
@@ -46,6 +53,7 @@ def handleParsingLine(line, parsedData):
     if (faceCase):
         writeLineData(lineData, parsedData, False)
 
+
 def parseObjFile(fileName):
     parsedData = {'name':"", "vertices": [], "faces": []}
 
@@ -55,11 +63,12 @@ def parseObjFile(fileName):
 
     return parsedData
 
+
 def loadObjFile(canvas):
     fileName = handleOpenExplorer()
     objData = parseObjFile(fileName)
     
-    name, vertices, faces = objData["name"], objData["vertices"], objData["faces"]
-    
-    drawObject(canvas, vertices, faces)
+    drawObject(canvas, objData)
+
+    return objData
 
