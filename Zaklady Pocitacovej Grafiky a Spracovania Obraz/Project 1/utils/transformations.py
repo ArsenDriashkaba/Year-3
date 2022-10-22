@@ -22,37 +22,47 @@ def translateObj(objData, tx, ty, tz):
         objData["vertices"][i].multiplyByMatrix4d(Translate)
 
 
+def rotateVertex(vertex, defaultVertex, rotateMatrix):
+    v1, v2 = vertex.value, defaultVertex.value
+
+    l1 = v1[0] + v2[0]
+    l2 = v1[1] + v2[1]
+
+    MainMatrix = TranslationMatrix(-l1, -l2, 0)
+    TranslateInverse = TranslationMatrix(l1, l2, 0)
+
+    rotateMatrix.multiplyByMatrix4d(MainMatrix)
+    rotateMatrix.multiplyByMatrix4d(TranslateInverse)
+
+    vertex.multiplyByMatrix4d(rotateMatrix)
+
+
 def rotateObjX(objData, teta, vertices):
     Rotate = RotateMatrix_X(teta)
 
     for i in range(len(objData["vertices"])):
-        v = objData["vertices"][i].value
-        v2 = vertices[i].value
-
-        l1 = v[0] - v2[0]
-        l2 = v[1] - v2[1]
-        l3 = v[2] - v2[2]
-
-        print(l1, l2, l3)
-
-        MainMatrix = TranslationMatrix(-l1, -l2, 0)
-        TranslateInverse = TranslationMatrix(l1, l2, 0)
-
-        Rotate.multiplyByMatrix4d(TranslateInverse)
-        Rotate.multiplyByMatrix4d(MainMatrix)
-
-        objData["vertices"][i].multiplyByMatrix4d(Rotate)
+        rotateVertex(objData["vertices"][i], vertices[i], Rotate)
 
 
-def rotateObjY(objData, teta):
+def rotateObjY(objData, teta, vertices):
     Rotate = RotateMatrix_Y(teta)
 
     for i in range(len(objData["vertices"])):
-        objData["vertices"][i].multiplyByMatrix4d(Rotate)
+        rotateVertex(objData["vertices"][i], vertices[i], Rotate)
 
 
-def rotateObjZ(objData, teta):
+def rotateObjZ(objData, teta, vertices):
     Rotate = RotateMatrix_Z(teta)
 
     for i in range(len(objData["vertices"])):
-        objData["vertices"][i].multiplyByMatrix4d(Rotate)
+        rotateVertex(objData["vertices"][i], vertices[i], Rotate)
+
+
+def rotateObj(objData, vertices, xTeta, yTeta, zTeta):
+    if (xTeta != 0):
+        rotateObjX(objData, xTeta, vertices)
+    if (yTeta != 0):
+        rotateObjY(objData, yTeta, vertices)
+    if (zTeta != 0):
+        rotateObjZ(objData, zTeta, vertices)
+

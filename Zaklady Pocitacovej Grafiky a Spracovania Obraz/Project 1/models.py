@@ -73,6 +73,10 @@ class Matrix4D:
                 self.value[i][j] = newValue
 
 
+    def transposeMatrix(self):
+        self.value = [[self.value[j][i] for j in range(len(self.value))] for i in range(len(self.value[0]))]
+
+
 class ScaleMatrix(Matrix4D):
 
     def __init__(self, sx, sy, sz) -> list:
@@ -142,9 +146,6 @@ if __name__ == "__main__":
     v1 = Vertex4D(2, 3, 4, 5)
     tm1 = TranslationMatrix(4, 3, 5);
 
-    v1.multiplyByMatrix4d(tm1)
-
-    print(tm1.value)
-
-    print(v1)
+    print(tm1.transposeMatrix())
+    print(tm1)
     
