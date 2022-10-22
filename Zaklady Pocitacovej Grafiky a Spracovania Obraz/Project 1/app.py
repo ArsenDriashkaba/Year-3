@@ -3,6 +3,7 @@ from utils.files import *
 from utils.geometryUi import *
 from utils.transformations import *
 from constants.app import *
+import copy
 
 root = Tk()
 root.title("Renderer")
@@ -13,11 +14,13 @@ appCanvas.pack(side="left", padx=10, pady=10)
 
 
 OBJ_DATA = None
+vertices = None
 
 def showObj():
-    global OBJ_DATA
+    global OBJ_DATA, vertices
     appCanvas.delete("all")
     OBJ_DATA = loadObjFile(appCanvas)
+    vertices = copy.deepcopy(OBJ_DATA["vertices"])
 
 
 def testScale():
@@ -38,6 +41,12 @@ def testRotate():
     drawObject(appCanvas, OBJ_DATA)
 
 
+def testReset():
+    appCanvas.delete("all")
+    OBJ_DATA["vertices"] = copy.deepcopy(vertices)
+    drawObject(appCanvas, OBJ_DATA)
+
+
 openExplorerBtn = Button(root, text='Open File', command=showObj)
 openExplorerBtn.pack(side="right", padx=10)
 
@@ -49,5 +58,8 @@ openExplorerBtn2.pack(side="right", padx=10)
 
 openExplorerBtn3 = Button(root, text='Rotate', command=testRotate)
 openExplorerBtn3.pack(side="right", padx=10)
+
+openExplorerBtn4 = Button(root, text='Reset', command=testReset)
+openExplorerBtn4.pack(side="right", padx=10)
 
 root.mainloop()
