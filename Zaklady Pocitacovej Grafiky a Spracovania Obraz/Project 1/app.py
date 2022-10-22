@@ -12,9 +12,13 @@ root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 appCanvas = Canvas(root, width=CANVAS_WIDTH, height=CANVAS_HEIGHT, bg="white") #center = (450, 360)
 appCanvas.pack(side="left", padx=10, pady=10)
 
+appCanvas.configure(scrollregion=(-CANVAS_CENTER_X, -CANVAS_CENTER_Y, CANVAS_CENTER_X, CANVAS_CENTER_Y))
+
 
 OBJ_DATA = None
+OBJ_COPY = None
 vertices = None
+
 
 def showObj():
     global OBJ_DATA, vertices
@@ -37,7 +41,7 @@ def testTranslate():
 
 def testRotate():
     appCanvas.delete("all")
-    rotateObj(OBJ_DATA, 90)
+    rotateObjX(OBJ_DATA, 45, vertices)
     drawObject(appCanvas, OBJ_DATA)
 
 

@@ -3,6 +3,7 @@ import os
 from utils.geometryUi import drawObject
 from constants.app import *
 from models import Vertex4D
+from utils.transformations import *
 
 INITIAL_OBJ_DIR = os.getcwd();
 
@@ -18,13 +19,7 @@ def writeLineData(lineData, parsedData, isVertexData=True):
         elem = 0
 
         if (isVertexData):
-            # As transformations are not implemented(future task) we will use this mock approach to translate and scale vectors
-            translationToCenter = 0
-
-            if (i == 1): translationToCenter = CANVAS_CENTER_X
-            elif (i == 2): translationToCenter = CANVAS_CENTER_Y
-
-            elem = (float(lineData[i])) * -1 * DEFAULT_SCALING + translationToCenter
+            elem = -(float(lineData[i]))
         else:
             elem = int(lineData[i])
 
@@ -68,6 +63,8 @@ def loadObjFile(canvas):
     fileName = handleOpenExplorer()
     objData = parseObjFile(fileName)
     
+    scaleObj(objData, 100, 100, 100)
+
     drawObject(canvas, objData)
 
     return objData
