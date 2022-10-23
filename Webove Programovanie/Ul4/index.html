@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>Socket.io + Canvas</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect();
+    </script>
+    <script>
+      window.names = [
+        "Abbott, Bud",
+        "Abdul, Paula",
+        "Ackerman, Harry",
+        "Acord, Art",
+        "Acuff, Roy",
+        "Adams, Bryan",
+        "Adler, Lou",
+        "Adler, Stella",
+        "Adoree, Renee",
+        "Aguilar, Antonio",
+        "Aguilar, Pepe",
+        "Aguilera, Christina",
+        "Aherne, Brian",
+        "Ahn, Philip",
+        "Alabama",
+        "Albanese, Licia",
+        "Albert, Eddie",
+        "Albertson, Frank",
+        "Albertson, Jack",
+        "Alexander, Ben",
+        "Ali, Muhammad",
+      ];
+    </script>
+    <style>
+      #main-section {
+        display: flex;
+        justify-content: space-evenly;
+      }
+      #platno {
+        background: #ffffff;
+      }
+      #users {
+        background-color: #ffffff;
+        width: 12%;
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        border: none;
+        overflow: scroll;
+      }
+      .color-btn {
+        border-radius: 0.3rem;
+        width: 30px;
+        height: 30px;
+        border: 1px solid gray;
+        cursor: pointer;
+      }
+      .black {
+        background-color: black;
+      }
+      .red {
+        background-color: red;
+      }
+      .cyan {
+        background-color: cyan;
+      }
+      .green {
+        background-color: green;
+      }
+      .purple {
+        background-color: purple;
+      }
+      .blue {
+        background-color: blue;
+      }
+      .orange {
+        background-color: orange;
+      }
+      .yellowgreen {
+        background-color: yellowgreen;
+      }
+      .pink {
+        background-color: pink;
+      }
+      .gray {
+        background-color: gray;
+      }
+    </style>
+  </head>
+  <body onload="kresli()" style="background-color: rgb(240, 240, 240)">
+    <h1>Socket.io + Canvas</h1>
+
+    <section id="main-section">
+      <div id="canvas-container">
+        <div id="colors">
+          <button class="color-btn black" value="black"></button>
+          <button class="color-btn red" value="red"></button>
+          <button class="color-btn cyan" value="cyan"></button>
+          <button class="color-btn green" value="green"></button>
+          <button class="color-btn purple" value="purple"></button>
+          <button class="color-btn blue" value="blue"></button>
+          <button class="color-btn orange" value="orange"></button>
+          <button class="color-btn yellowgreen" value="yellowgreen"></button>
+          <button class="color-btn pink" value="pink"></button>
+          <button class="color-btn gray" value="gray"></button>
+          <input type="color" name="color" id="colorPicker" />
+        </div>
+        <p id="meno"></p>
+        <form>
+          <input type="button" name="zmaz" id="zmaz" value="zmaž plochu" />
+        </form>
+        <canvas id="platno" width="1280" height="500"
+          >Váš prehliadač nepodporuje element Canvas</canvas
+        >
+      </div>
+      <div id="users"></div>
+    </section>
+
+    <script>
+      var name = getName();
+      var canvas, context, stlacene;
+      const colorButtons = document.querySelectorAll(".color-btn");
+      const colorPicker = document.getElementById("colorPicker");
+      const users = document.getElementById("users");
+
+      function getName() {
+        var name =
+          window.names[Math.floor(Math.random() * window.names.length)];
+        var tokens = name.split(",");
+
+        if (tokens.length > 1) {
+          return tokens[1].trim() + " " + tokens[0].trim();
+        }
+        return name;
+      }
+
+      function kresli() {
+        stlacene = false;
+        canvas = document.getElementById("platno");
+        context = canvas.getContext("2d");
+        context.lineWidth = 1;
+        context.strokeStyle = "#0000FF";
+        document.getElementById("meno").innerHTML = "tvoje meno: " + name;
+        socket.emit("userConnection", [name]);
+      }
+
+      document
+        .getElementById("platno")
+        .addEventListener("mousedown", function (e) {
+          const data = { canPaint: true, x: e.offsetX, y: e.offsetY };
+
+          socket.emit("mousedown", data);
+        });
+
+      document
+        .getElementById("platno")
+        .addEventListener("mouseup", function (e) {
+          socket.emit("mouseup", false);
+        });
+
+      document
+        .getElementById("platno")
+        .addEventListener("mousemove", function (e) {
+          if (stlacene) {
+            socket.emit("paint", { x: e.offsetX, y: e.offsetY });
+          }
+        });
+
+      document.getElementById("zmaz").addEventListener("click", function (e) {
+        socket.emit("zmaz", true);
+      });
+
+      colorButtons.forEach((button) =>
+        button.addEventListener("click", (e) => {
+          const colorValue = e?.target?.value;
+
+          socket.emit("colorChange", colorValue);
+        })
+      );
+
+      colorPicker.addEventListener("change", (e) => {
+        const color = e?.target?.value;
+
+        socket.emit("colorChange", color || "black");
+      });
+
+      socket.on("zmaz", function (msg) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      });
+
+      socket.on("paint", (coords) => {
+        const { x, y } = { ...coords };
+
+        context.lineTo(x, y);
+        context.stroke();
+      });
+
+      socket.on("mousedown", (data) => {
+        const { canPaint, x, y } = { ...data };
+
+        stlacene = canPaint;
+        context.beginPath();
+        context.moveTo(x, y);
+      });
+
+      socket.on("mouseup", (canPaint) => {
+        stlacene = canPaint;
+
+        context.stroke();
+      });
+
+      socket.on("colorChange", (colorValue) => {
+        context.strokeStyle = colorValue || "black";
+      });
+
+      socket.on("userConnection", (usersData) => {
+        users.innerHTML = "";
+
+        console.log(users);
+
+        usersData.forEach((name) => (users.innerHTML += `<h4>${name}</h4>`));
+      });
+    </script>
+  </body>
+</html>
