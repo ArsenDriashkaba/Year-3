@@ -26,6 +26,22 @@ class Vertex4D:
 
             self.value[i] = newVertexValue
 
+
+    def multiplyByTransponedMatrix4d(self, mat):
+        matrix = mat.value
+        selfCopy = self.value.copy()
+
+        if (len(matrix) != 4):
+            return 'Bad input matrix bro :c'
+
+        for i in range(len(matrix)):
+            newVertexValue = 0
+
+            for j in range(len(matrix[i])):
+                newVertexValue += matrix[j][i] * selfCopy[j]
+
+            self.value[i] = newVertexValue
+
     
 class Matrix4D:
     def __init__(self, 

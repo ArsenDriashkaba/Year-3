@@ -9,17 +9,25 @@ def scaleObj(objData, sx, sy, sz):
         TranslateInverse = TranslationMatrix(v[0], v[1], v[2])
         Scale = ScaleMatrix(sx, sy, sz)
 
+        MainMatrix.transposeMatrix()
+        TranslateInverse.transposeMatrix()
+        Scale.transposeMatrix()
+
         MainMatrix.multiplyByMatrix4d(Scale)
         MainMatrix.multiplyByMatrix4d(TranslateInverse)
 
         objData["vertices"][i].multiplyByMatrix4d(MainMatrix)
+        objData["vertices"][i].value[3] = 1
 
 
 def translateObj(objData, tx, ty, tz):
     Translate = TranslationMatrix(tx, ty, tz)
 
+    Translate.transposeMatrix()
+
     for i in range(len(objData["vertices"])):
-        objData["vertices"][i].multiplyByMatrix4d(Translate)
+        print(objData["vertices"][i])
+        objData["vertices"][i].multiplyByTransponedMatrix4d(Translate)
 
 
 def rotateVertex(vertex, defaultVertex, rotateMatrix):

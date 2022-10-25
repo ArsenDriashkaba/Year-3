@@ -63,7 +63,7 @@ def loadObjFile(canvas):
     fileName = handleOpenExplorer()
     objData = parseObjFile(fileName)
     
-    scaleObj(objData, 100, 100, 100)
+    scaleObj(objData, 150, 150, 150)
 
     drawObject(canvas, objData)
 

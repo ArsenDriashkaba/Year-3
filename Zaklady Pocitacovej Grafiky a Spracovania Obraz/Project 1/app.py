@@ -45,8 +45,6 @@ def testTranslate():
     y = translateY_input.get()
     z = translateZ_input.get()
 
-    print(x, y, z)
-
     translateObj(OBJ_DATA, x, y, z)
     drawObject(appCanvas, OBJ_DATA)
 
@@ -111,15 +109,15 @@ translateBtn.place(x=1092, y=125)
 #_______________________________Scale UI
 
 scaleX_input=DoubleVar(value=1)
-scaleX_increment = Spinbox(root, from_= 1, to = 100, width=5, increment=0.1,
+scaleX_increment = Spinbox(root, from_= 0.1, to = 100, width=5, increment=0.1,
     textvariable=scaleX_input,)
 
 scaleY_input=DoubleVar(value=1)
-scaleY_increment = Spinbox(root, from_= 1, to = 100, width=5, increment=0.1,
+scaleY_increment = Spinbox(root, from_= 0.1, to = 100, width=5, increment=0.1,
     textvariable=scaleY_input,)
 
 scaleZ_input=DoubleVar(value=1)
-scaleZ_increment = Spinbox(root, from_= 1, to = 100, width=5, increment=0.1,
+scaleZ_increment = Spinbox(root, from_= 0.1, to = 100, width=5, increment=0.1,
     textvariable=scaleZ_input,)
 
 scaleBtn = Button(root, text='Scale', width=8, command=testScale)
