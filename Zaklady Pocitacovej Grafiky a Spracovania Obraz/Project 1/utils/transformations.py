@@ -26,7 +26,7 @@ def translateObj(objData, tx, ty, tz):
     Translate.transposeMatrix()
 
     for i in range(len(objData["vertices"])):
-        print(objData["vertices"][i])
+        # print(objData["vertices"][i])
         objData["vertices"][i].multiplyByTransponedMatrix4d(Translate)
 
 

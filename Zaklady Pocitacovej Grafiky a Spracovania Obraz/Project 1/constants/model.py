@@ -10,4 +10,4 @@ shininess = 1
 
 pointView = Vertex4D(0, 0, -1, 1)
 
-lightDir = Vertex4D(0, -5, -10, 1).normalize()
+# lightDir = Vertex4D(0, -5, -10, 1).normalize()

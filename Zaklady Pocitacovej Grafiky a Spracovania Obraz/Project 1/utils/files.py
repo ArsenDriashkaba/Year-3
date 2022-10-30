@@ -59,13 +59,13 @@ def parseObjFile(fileName):
     return parsedData
 
 
-def loadObjFile(canvas):
+def loadObjFile(canvas, lightDir):
     fileName = handleOpenExplorer()
     objData = parseObjFile(fileName)
     
     scaleObj(objData, 150, 150, 150)
 
-    drawObject(canvas, objData)
+    drawObject(canvas, objData, lightDir)
 
     return objData
 

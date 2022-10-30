@@ -17,13 +17,9 @@ def getDiffuseIntensity(normal, light):
     return k_diffuse * dotProduct(normal, light)
 
 
-def getIntensity(v1, v2, v3):
+def getIntensity(lightDir, v1, v2, v3):
     N = getSurfaceNormal(v1, v2, v3)
     H = getHalfVertex(pointView, lightDir)
     Ia = 0.6
-
-    print("______________________________________")
-    print("Id", getDiffuseIntensity(N, lightDir))
-    print("Is", getSpecularIntensity(H, N, shininess))
 
     return k_ambient * Ia + getDiffuseIntensity(N, lightDir) + getSpecularIntensity(H, N, shininess)

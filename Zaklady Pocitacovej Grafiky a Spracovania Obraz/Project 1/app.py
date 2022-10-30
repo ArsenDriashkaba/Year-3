@@ -24,9 +24,9 @@ lightDir = Vertex4D(0, -5, -10, 1).normalize()
 
 
 def showObj():
-    global OBJ_DATA, vertices
+    global OBJ_DATA, vertices, lightDir
     appCanvas.delete("all")
-    OBJ_DATA = loadObjFile(appCanvas)
+    OBJ_DATA = loadObjFile(appCanvas, lightDir)
     vertices = copy.deepcopy(OBJ_DATA["vertices"])
 
 
@@ -38,7 +38,7 @@ def handleScale():
     z = scaleZ_input.get()
 
     scaleObj(OBJ_DATA, x, y, z)
-    drawObject(appCanvas, OBJ_DATA)
+    drawObject(appCanvas, OBJ_DATA, lightDir)
 
 
 def handleTranslate():
@@ -49,7 +49,7 @@ def handleTranslate():
     z = translateZ_input.get()
 
     translateObj(OBJ_DATA, x, y, z)
-    drawObject(appCanvas, OBJ_DATA)
+    drawObject(appCanvas, OBJ_DATA, lightDir)
 
 
 def handleRotate():
@@ -60,7 +60,7 @@ def handleRotate():
     z = rotateZ_input.get()
 
     rotateObj(OBJ_DATA, vertices, x, y, z)
-    drawObject(appCanvas, OBJ_DATA)
+    drawObject(appCanvas, OBJ_DATA, lightDir)
 
 
 def handleReset():
@@ -79,7 +79,7 @@ def handleReset():
     rotateZ_input.initialize(0)
 
     OBJ_DATA["vertices"] = copy.deepcopy(vertices)
-    drawObject(appCanvas, OBJ_DATA)
+    drawObject(appCanvas, OBJ_DATA, lightDir)
 
 
 def setLight():
@@ -91,6 +91,7 @@ def setLight():
     z = lightZ_input.get()
 
     lightDir = Vertex4D(x, y, z, 1).normalize()
+    drawObject(appCanvas, OBJ_DATA, lightDir)
 
 
 openExplorerBtn = Button(root, text='Open File', width=10, command=showObj)
