@@ -20,6 +20,9 @@ OBJ_COPY = None
 vertices = None
 
 
+lightDir = Vertex4D(0, -5, -10, 1).normalize()
+
+
 def showObj():
     global OBJ_DATA, vertices
     appCanvas.delete("all")
@@ -79,11 +82,22 @@ def handleReset():
     drawObject(appCanvas, OBJ_DATA)
 
 
+def setLight():
+    global lightDir
+    appCanvas.delete("all")
+
+    x = lightX_input.get()
+    y = lightY_input.get()
+    z = lightZ_input.get()
+
+    lightDir = Vertex4D(x, y, z, 1).normalize()
+
+
 openExplorerBtn = Button(root, text='Open File', width=10, command=showObj)
-openExplorerBtn.place(x=1050, y=500)
+openExplorerBtn.place(x=1050, y=600)
 
 resetBtn = Button(root, text='Reset', width=10, command=handleReset)
-resetBtn.place(x=1150, y=500)
+resetBtn.place(x=1150, y=600)
 
 #_______________________________Translation UI
 
@@ -147,5 +161,26 @@ rotateX_increment.place(x=1000, y=300)
 rotateY_increment.place(x=1100, y=300)
 rotateZ_increment.place(x=1200, y=300)
 rotateBtn.place(x=1092, y=325)
+
+#_______________________________Light Direction
+
+lightX_input=IntVar(value=0)
+lightX_increment = Spinbox(root, from_= -5000, to = 5000, width=5, increment=5,
+    textvariable=lightX_input,)
+
+lightY_input=IntVar(value=-5)
+lightY_increment = Spinbox(root, from_= -5000, to = 5000, width=5, increment=5,
+    textvariable=lightY_input,)
+
+lightZ_input=IntVar(value=-10)
+lightZ_increment = Spinbox(root, from_= -5000, to = 5000, width=5, increment=5,
+    textvariable=lightZ_input,)
+
+lightBtn = Button(root, text='Set Light', width=8, command=setLight)
+
+lightX_increment.place(x=1000, y=400)
+lightY_increment.place(x=1100, y=400)
+lightZ_increment.place(x=1200, y=400)
+lightBtn.place(x=1092, y=425)
 
 root.mainloop()

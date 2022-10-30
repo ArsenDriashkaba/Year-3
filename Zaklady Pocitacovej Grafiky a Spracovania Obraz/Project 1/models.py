@@ -54,6 +54,19 @@ class Vertex4D:
         v = self.value
 
         return Vertex4D(v[0]/length, v[1]/length, v[2]/length, 1)
+
+
+    def add(self, vec):
+        v1 = self.value
+        v2 = vec.value
+
+        return Vertex4D(v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2], 1)
+
+    
+    def multiplyByScalar(self, s):
+        v = self.value
+
+        return Vertex4D(v[0] * s, v[1] * s, v[2] * s, 1)
         
 
     
