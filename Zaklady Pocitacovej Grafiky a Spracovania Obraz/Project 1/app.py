@@ -27,7 +27,7 @@ def showObj():
     vertices = copy.deepcopy(OBJ_DATA["vertices"])
 
 
-def testScale():
+def handleScale():
     appCanvas.delete("all")
 
     x = scaleX_input.get()
@@ -38,7 +38,7 @@ def testScale():
     drawObject(appCanvas, OBJ_DATA)
 
 
-def testTranslate():
+def handleTranslate():
     appCanvas.delete("all")
 
     x = translateX_input.get()
@@ -49,7 +49,7 @@ def testTranslate():
     drawObject(appCanvas, OBJ_DATA)
 
 
-def testRotate():
+def handleRotate():
     appCanvas.delete("all")
 
     x = rotateX_input.get()
@@ -60,7 +60,7 @@ def testRotate():
     drawObject(appCanvas, OBJ_DATA)
 
 
-def testReset():
+def handleReset():
     appCanvas.delete("all")
 
     scaleX_input.initialize(float(1))
@@ -82,7 +82,7 @@ def testReset():
 openExplorerBtn = Button(root, text='Open File', width=10, command=showObj)
 openExplorerBtn.place(x=1050, y=500)
 
-resetBtn = Button(root, text='Reset', width=10, command=testReset)
+resetBtn = Button(root, text='Reset', width=10, command=handleReset)
 resetBtn.place(x=1150, y=500)
 
 #_______________________________Translation UI
@@ -99,7 +99,7 @@ translateZ_input=IntVar(value=0)
 translateZ_increment = Spinbox(root, from_= 0, to = 5000, width=5, increment=10,
     textvariable=translateZ_input,)
 
-translateBtn = Button(root, text='Translate', width=8, command=testTranslate)
+translateBtn = Button(root, text='Translate', width=8, command=handleTranslate)
 
 translateX_increment.place(x=1000, y=100)
 translateY_increment.place(x=1100, y=100)
@@ -120,7 +120,7 @@ scaleZ_input=DoubleVar(value=1)
 scaleZ_increment = Spinbox(root, from_= 0.1, to = 100, width=5, increment=0.1,
     textvariable=scaleZ_input,)
 
-scaleBtn = Button(root, text='Scale', width=8, command=testScale)
+scaleBtn = Button(root, text='Scale', width=8, command=handleScale)
 
 scaleX_increment.place(x=1000, y=200)
 scaleY_increment.place(x=1100, y=200)
@@ -141,7 +141,7 @@ rotateZ_input=IntVar(value=0)
 rotateZ_increment = Spinbox(root, from_= 0, to = 359, width=5, increment=1,
     textvariable=rotateZ_input,)
 
-rotateBtn = Button(root, text='Rotate', width=8, command=testRotate)
+rotateBtn = Button(root, text='Rotate', width=8, command=handleRotate)
 
 rotateX_increment.place(x=1000, y=300)
 rotateY_increment.place(x=1100, y=300)

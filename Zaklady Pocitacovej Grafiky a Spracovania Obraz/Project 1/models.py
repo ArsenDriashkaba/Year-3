@@ -1,4 +1,4 @@
-from utils.models import *
+from utils.math import copyMatrix4d, toRadians
 from math import cos, sin
 
 class Vertex4D:
@@ -41,6 +41,20 @@ class Vertex4D:
                 newVertexValue += matrix[j][i] * selfCopy[j]
 
             self.value[i] = newVertexValue
+
+    
+    def euclidian(self):
+        v = self.value
+
+        return (v[0]**2 + v[1]**2 + v[2]**2) ** 0.5
+
+
+    def normalize(self):
+        length = self.euclidian()
+        v = self.value
+
+        return Vertex4D(v[0]/length, v[1]/length, v[2]/length, 1)
+        
 
     
 class Matrix4D:
@@ -159,9 +173,6 @@ class RotateMatrix_Z(Matrix4D):
 
 if __name__ == "__main__":
 
-    v1 = Vertex4D(2, 3, 4, 5)
-    tm1 = TranslationMatrix(4, 3, 5);
-
-    print(tm1.transposeMatrix())
-    print(tm1)
+    v1 = Vertex4D(4, 1, 3, 1)
+    v2 = Vertex4D(-5, 2, 3, 1)
     
