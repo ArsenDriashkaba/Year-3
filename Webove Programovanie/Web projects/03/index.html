@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="sprites2v.js"></script>
+    <script>
+      var homeDir = "";
+    </script>
+    <script src="app.js"></script>
+    <script>
+      var uloha = new juiceSelection("canvas", true, homeDir);
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section>
+      <h1>Lets play!</h1>
+      <p>
+        Janko has to choose the bottle that has less juice than the bottle to
+        the right of it. Select all the bottles that Janko can choose.
+      </p>
+    </section>
+    <canvas id="canvas"></canvas>
+    <p id="vypis"></p>
+    <form action=""><button id="retry" type="submit">Retry</button></form>
+  </body>
+</html>

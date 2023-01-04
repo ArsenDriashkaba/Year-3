@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>node.js - express</title>
+    <link rel="stylesheet" href="css/styly.css" />
+    <script src="js/main.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <nav><a href="/">úvod</a> <a href="/add">pridaj novú</a></nav>
+      <h1>Pridanie novej kytice</h1>
+      <form
+        method="post"
+        onsubmit="javascript: return kontrola()"
+        action="/add"
+      >
+        názov: <input type="text" name="nova_nazov" id="nova_nazov" /><br />
+        cena: <input type="text" name="nova_cena" id="nova_cena" /><br />
+        <input type="submit" name="odosli" value="Pridaj" />
+      </form>
+    </div>
+  </body>
+</html>
