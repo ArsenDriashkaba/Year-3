@@ -15,7 +15,7 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.post("/add", function (req, res) {
+app.post("/save", (req, res) => {
   const path = `${__dirname}/js/data.json`;
   const { nova_nazov: nazov, nova_cena: cena } = { ...req.body };
   const newItem = { id: data.length + 1, nazov, cena };

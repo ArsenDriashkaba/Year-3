@@ -10,17 +10,18 @@ const imgDirPath = "images";
 const meshSize = 7;
 const meshStartX = 65;
 const meshStartY = 50;
+const meshGap = 85;
 const dirStartX = meshStartX;
 const dirStartY = 40;
 const directions = {
-  UP: [1, 0],
-  DOWN: [-1, 0],
-  LEFT: [0, 1],
-  RIGHT: [0, -1],
-  "UP-LEFT": [1, 1],
-  "DOWN-LEFT": [-1, 1],
-  "UP-RIGHT": [1, -1],
-  "DOWN-RIGHT": [-1, -1],
+  UP: [-1, 0],
+  DOWN: [1, 0],
+  LEFT: [0, -1],
+  RIGHT: [0, 1],
+  "UP-LEFT": [-1, -1],
+  "DOWN-LEFT": [1, -1],
+  "UP-RIGHT": [-1, 1],
+  "DOWN-RIGHT": [1, 1],
 };
 
 const meshInfo = {
@@ -37,16 +38,25 @@ const findDirection = (pointBuffer, directions) =>
     const sprite2 = pointBuffer[1];
 
     const dirCoords = directions[direction];
-    const firstPoint = [sprite1.row, sprite1.column];
-    const secondPoint = [
-      sprite2.row + dirCoords[0],
-      sprite2.column + dirCoords[1],
+    const targetPoint = [sprite2.row, sprite2.column];
+
+    const nextPoint = [
+      sprite1.row + dirCoords[0],
+      sprite1.column + dirCoords[1],
     ];
 
-    return firstPoint.every((elem, index) => elem === secondPoint[index]);
+    console.log({
+      point1: [sprite1.row, sprite1.column],
+      targetPoint,
+      nextPoint,
+      direction,
+      dirCoords,
+    });
+
+    return nextPoint.every((elem, index) => elem === targetPoint[index]);
   });
 
-const handleNextPoint = (pointBuffer, sprite, drawDirection) => {
+const handleNextPoint = (pointBuffer, sprite, drawDirection, drawLine) => {
   pointBuffer.push(sprite);
 
   if (pointBuffer.length === 2) {
@@ -65,6 +75,7 @@ const handleNextPoint = (pointBuffer, sprite, drawDirection) => {
     }
 
     drawDirection(imgDirPath, newDirection);
+    drawLine(imgDirPath, newDirection, pointBuffer[0].pos);
 
     meshInfo.steps.push(newDirection);
     pointBuffer.splice(0, 1);
@@ -76,9 +87,8 @@ function mainGame(canvas, enabled) {
   this.act1 = new Activity(stepsCanvas, enabled);
 
   this.act.onClick = (sprite) => {
-    sprite.highlight = sprite.highlight === null ? "green" : null;
-
-    console.log(sprite);
+    circles.forEach((sprite) => (sprite.highlight = null));
+    sprite.highlight = "green";
 
     const pointPos = sprite.pos;
 
@@ -86,14 +96,8 @@ function mainGame(canvas, enabled) {
       meshInfo.startPoint = pointPos;
       pointBuffer.push(sprite);
     } else {
-      handleNextPoint(pointBuffer, sprite, drawDirection);
+      handleNextPoint(pointBuffer, sprite, drawDirection, drawLine);
     }
-
-    // document.getElementById("vypis").innerHTML = this.act.getResult();
-  };
-
-  this.act.getResult = function () {
-    return "Answer is incorrect or haven't been finished yet";
   };
 
   const drawMesh = (imgPath, size) => {
@@ -101,8 +105,8 @@ function mainGame(canvas, enabled) {
 
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
-        const posX = meshStartX + i * 85;
-        const posY = meshStartY + j * 85;
+        const posX = meshStartX + i * meshGap;
+        const posY = meshStartY + j * meshGap;
 
         const circle = new Sprite(
           this.act,
@@ -124,14 +128,24 @@ function mainGame(canvas, enabled) {
   const drawDirection = (imgPath, direction) => {
     const directionImgPath = `${imgPath}/${direction}.png`;
 
-    const directionSprite = new Sprite(
+    new Sprite(
       this.act1,
       directionImgPath,
       dirStartX + meshInfo.steps.length * 50,
       dirStartY
     );
+  };
 
-    directionSprite.images[0].width = 20;
+  const drawLine = (imgPath, direction, coords) => {
+    const lineImgPath = `${imgPath}/${direction}-RED.png`;
+    const koeficients = directions[direction];
+
+    new Sprite(
+      this.act,
+      lineImgPath,
+      coords[0] + koeficients[1] * (meshGap / 2),
+      coords[1] + koeficients[0] * (meshGap / 2)
+    );
   };
 
   drawMesh(imgDirPath, meshSize);

@@ -16,8 +16,8 @@ body {
 }
 
 canvas {
-  width: 650px;
-  height: 600px;
+  width: 40rem;
+  height: 37rem;
   overflow: scroll;
   border-radius: 1rem;
   background-color: white;
@@ -40,6 +40,9 @@ p {
 #steps-section {
   margin: 0 auto;
   width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #mesh-section {
@@ -57,8 +60,10 @@ p {
 }
 
 #steps-canvas-container {
+  width: 70%;
   overflow-x: scroll;
   border-radius: 1rem;
+  scrollbar-color: none;
 }
 
 #vypis {
