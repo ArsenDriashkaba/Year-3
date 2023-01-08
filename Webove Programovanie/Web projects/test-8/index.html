@@ -13,14 +13,21 @@
       <div id="steps-canvas-container">
         <canvas id="canvas1"></canvas>
       </div>
-      <button>Save</button>
     </section>
 
     <section id="mesh-section">
       <canvas id="canvas"></canvas>
       <div id="menu">
+        <div>
+          <label for="save-name">Save name</label>
+          <input id="save-name" name="save-name" type="text" />
+          <button id="save">Save</button>
+        </div>
         <input id="upload-file" type="file" />
         <button id="apply">Apply</button>
+        <form action="">
+          <button id="clear" type="submit">Clear board</button>
+        </form>
       </div>
     </section>
     <p id="vypis"></p>

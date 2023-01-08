@@ -1,1 +1,1 @@
-[{"id":1,"nazov":"19 bordovofialových ruží","cena":84.5},{"id":2,"nazov":"Flamenco","cena":27.52},{"id":3,"nazov":"Miešaná okrúhla kytica","cena":60.9},{"id":4,"nazov":"Patricia","cena":26.52},{"id":5,"nazov":"Pestrý deň","cena":35.19},{"id":6,"nazov":"asdasdasdasd","cena":"22"},{"id":7,"nazov":"very cool name","cena":"44"},{"id":8,"nazov":"another cool one","cena":"78"}]
+{"startPoint":[150,50],"steps":["RIGHT","DOWN","RIGHT"]}

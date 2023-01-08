@@ -60,10 +60,10 @@ p {
 }
 
 #steps-canvas-container {
-  width: 70%;
+  width: 100%;
   overflow-x: scroll;
   border-radius: 1rem;
-  scrollbar-color: none;
+  scrollbar-width: none;
 }
 
 #vypis {

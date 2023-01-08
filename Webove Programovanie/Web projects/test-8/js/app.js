@@ -1,9 +1,13 @@
 let error = "";
+let saveName = "";
 
 const myCanvas = document.getElementById("canvas");
 const stepsCanvas = document.getElementById("canvas1");
 const fileInput = document.getElementById("upload-file");
 const applyBtn = document.getElementById("apply");
+const saveBtn = document.getElementById("save");
+const saveNameInput = document.getElementById("save-name");
+const clearBtn = document.getElementById("clear");
 const ctx = myCanvas.getContext("2d");
 
 const imgDirPath = "images";
@@ -45,14 +49,6 @@ const findDirection = (pointBuffer, directions) =>
       sprite1.column + dirCoords[1],
     ];
 
-    console.log({
-      point1: [sprite1.row, sprite1.column],
-      targetPoint,
-      nextPoint,
-      direction,
-      dirCoords,
-    });
-
     return nextPoint.every((elem, index) => elem === targetPoint[index]);
   });
 
@@ -62,8 +58,6 @@ const handleNextPoint = (pointBuffer, sprite, drawDirection, drawLine) => {
   if (pointBuffer.length === 2) {
     // We are trying to understand the direction of next move
     const newDirection = findDirection(pointBuffer, directions);
-
-    console.log(newDirection);
 
     if (!newDirection) {
       pointBuffer.splice(1);
@@ -151,6 +145,45 @@ function mainGame(canvas, enabled) {
   drawMesh(imgDirPath, meshSize);
 }
 
-applyBtn.addEventListener("click", () => {
-  console.log(fileInput.files);
+saveNameInput.addEventListener("change", (e) => {
+  saveName = e.target.value;
+});
+
+saveBtn.addEventListener("click", async () => {
+  try {
+    if (!saveName) {
+      return;
+    }
+
+    const data = { saveName, meshInfo };
+
+    await fetch("/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }).then((response) => console.log(response));
+
+    saveNameInput.value = "";
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+applyBtn.addEventListener("click", async () => {
+  try {
+    const fileName = fileInput.files[0]?.name;
+
+    if (!fileName) {
+      return;
+    }
+
+    const response = await fetch(`/files/${fileName}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => response.json());
+
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
 });
