@@ -146,13 +146,14 @@ function mainGame(canvas, enabled) {
     }
   };
 
-  const drawDirection = (imgPath, direction) => {
+  const drawDirection = (imgPath, direction, pos = null) => {
     const directionImgPath = `${imgPath}/${direction}.png`;
+    const lambda = pos !== null ? pos : meshInfo.steps.length;
 
     const stepSprite = new Sprite(
       this.act1,
       directionImgPath,
-      dirStartX + meshInfo.steps.length * 50,
+      dirStartX + lambda * 50,
       dirStartY
     );
 
@@ -179,11 +180,12 @@ function mainGame(canvas, enabled) {
     let x = startPoint[0];
     let y = startPoint[1];
 
-    Object.keys(steps).map((step) => {
+    Object.keys(steps).map((step, index) => {
       const direction = steps[step];
       const koeficients = directions[direction];
 
       drawLine(imgPath, direction, [x, y]);
+      drawDirection(imgPath, direction, index);
 
       x += koeficients[1] * meshGap;
       y += koeficients[0] * meshGap;
