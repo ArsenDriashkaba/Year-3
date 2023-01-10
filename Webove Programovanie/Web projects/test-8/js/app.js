@@ -43,6 +43,8 @@ const findDirection = (pointBuffer, directions) =>
     const sprite1 = pointBuffer[0];
     const sprite2 = pointBuffer[1];
 
+    console.log({ sprite1, sprite2 });
+
     const dirCoords = directions[direction];
     const targetPoint = [sprite2.row, sprite2.column];
 
@@ -96,9 +98,7 @@ function mainGame(canvas, enabled) {
     }
   };
 
-  this.act.onClick = handleThisActivityClick;
-
-  clearBtn.addEventListener("click", () => {
+  const clearBoard = () => {
     // Board reseting and clearing all of the arrays
 
     lines.forEach((sprite) => sprite.erase());
@@ -115,7 +115,11 @@ function mainGame(canvas, enabled) {
     pointBuffer = [];
 
     drawMesh(imgDirPath, meshSize);
-  });
+  };
+
+  this.act.onClick = handleThisActivityClick;
+
+  clearBtn.addEventListener("click", clearBoard);
 
   const drawMesh = (imgPath, size) => {
     const circlePath = `${imgPath}/circle.png`;
@@ -169,6 +173,59 @@ function mainGame(canvas, enabled) {
     lines.push(lineSprite);
   };
 
+  const drawComposition = (imgPath, meshConfig) => {
+    const { startPoint, steps } = meshConfig;
+
+    let x = startPoint[0];
+    let y = startPoint[1];
+
+    Object.keys(steps).map((step) => {
+      const direction = steps[step];
+      const koeficients = directions[direction];
+
+      drawLine(imgPath, direction, [x, y]);
+
+      x += koeficients[1] * meshGap;
+      y += koeficients[0] * meshGap;
+    });
+
+    const circleIdx = this.act.sprites.findIndex(
+      (circle) => circle.x === x && circle.y === y
+    );
+
+    this.act.sprites[circleIdx].highlight = "green";
+
+    pointBuffer.push(circles[circleIdx]);
+  };
+
+  applyBtn.addEventListener("click", async () => {
+    try {
+      const fileName = fileInput.files[0]?.name;
+
+      if (!fileName) {
+        return;
+      }
+
+      const response = await fetch(`/files/${fileName}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }).then((response) => response.json());
+
+      const { startPoint, steps } = response;
+
+      clearBoard();
+
+      meshInfo.startPoint = startPoint;
+      meshInfo.steps = steps;
+
+      console.log(meshInfo);
+
+      drawComposition(imgDirPath, meshInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   drawMesh(imgDirPath, meshSize);
 }
 
@@ -191,25 +248,6 @@ saveBtn.addEventListener("click", async () => {
     }).then((response) => console.log(response));
 
     saveNameInput.value = "";
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-applyBtn.addEventListener("click", async () => {
-  try {
-    const fileName = fileInput.files[0]?.name;
-
-    if (!fileName) {
-      return;
-    }
-
-    const response = await fetch(`/files/${fileName}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    }).then((response) => response.json());
-
-    console.log(response);
   } catch (error) {
     console.log(error);
   }
