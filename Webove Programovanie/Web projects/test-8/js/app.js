@@ -1,5 +1,6 @@
 let error = "";
 let saveName = "";
+let pointBuffer = [];
 
 const myCanvas = document.getElementById("canvas");
 const stepsCanvas = document.getElementById("canvas1");
@@ -33,7 +34,8 @@ const meshInfo = {
   steps: [],
 };
 const circles = [];
-const pointBuffer = [];
+const lines = [];
+const steps = [];
 
 // compare points till one matches the direction. Returns directions
 const findDirection = (pointBuffer, directions) =>
@@ -80,7 +82,7 @@ function mainGame(canvas, enabled) {
   this.act = new Activity(myCanvas, enabled);
   this.act1 = new Activity(stepsCanvas, enabled);
 
-  this.act.onClick = (sprite) => {
+  const handleThisActivityClick = (sprite) => {
     circles.forEach((sprite) => (sprite.highlight = null));
     sprite.highlight = "green";
 
@@ -93,6 +95,27 @@ function mainGame(canvas, enabled) {
       handleNextPoint(pointBuffer, sprite, drawDirection, drawLine);
     }
   };
+
+  this.act.onClick = handleThisActivityClick;
+
+  clearBtn.addEventListener("click", () => {
+    // Board reseting and clearing all of the arrays
+
+    lines.forEach((sprite) => sprite.erase());
+    steps.forEach((sprite) => sprite.erase());
+    circles.forEach((sprite) => sprite.erase());
+
+    this.act1 = new Activity(stepsCanvas, enabled);
+    this.act = new Activity(myCanvas, enabled);
+
+    this.act.onClick = handleThisActivityClick;
+
+    meshInfo.startPoint = null;
+    meshInfo.steps = [];
+    pointBuffer = [];
+
+    drawMesh(imgDirPath, meshSize);
+  });
 
   const drawMesh = (imgPath, size) => {
     const circlePath = `${imgPath}/circle.png`;
@@ -122,24 +145,28 @@ function mainGame(canvas, enabled) {
   const drawDirection = (imgPath, direction) => {
     const directionImgPath = `${imgPath}/${direction}.png`;
 
-    new Sprite(
+    const stepSprite = new Sprite(
       this.act1,
       directionImgPath,
       dirStartX + meshInfo.steps.length * 50,
       dirStartY
     );
+
+    steps.push(stepSprite);
   };
 
   const drawLine = (imgPath, direction, coords) => {
     const lineImgPath = `${imgPath}/${direction}-RED.png`;
     const koeficients = directions[direction];
 
-    new Sprite(
+    const lineSprite = new Sprite(
       this.act,
       lineImgPath,
       coords[0] + koeficients[1] * (meshGap / 2),
       coords[1] + koeficients[0] * (meshGap / 2)
     );
+
+    lines.push(lineSprite);
   };
 
   drawMesh(imgDirPath, meshSize);
