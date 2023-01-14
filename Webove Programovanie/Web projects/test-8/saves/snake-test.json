@@ -1,0 +1,4 @@
+{
+  "startPoint": [235, 50],
+  "steps": ["RIGHT", "DOWN", "RIGHT", "UP", "RIGHT", "DOWN", "RIGHT", "UP"]
+}

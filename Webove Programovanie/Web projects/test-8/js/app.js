@@ -1,4 +1,4 @@
-let error = "";
+let errors = [];
 let saveName = "";
 let pointBuffer = [];
 
@@ -9,6 +9,7 @@ const applyBtn = document.getElementById("apply");
 const saveBtn = document.getElementById("save");
 const saveNameInput = document.getElementById("save-name");
 const clearBtn = document.getElementById("clear");
+const output = document.getElementById("vypis");
 const ctx = myCanvas.getContext("2d");
 
 const imgDirPath = "images";
@@ -36,6 +37,15 @@ const meshInfo = {
 const circles = [];
 const lines = [];
 const steps = [];
+
+const errorsOutputHandler = () => {
+  const errorMessages = errors.reduce(
+    (curr, acc) => acc + `<li>${curr}</li>`,
+    ""
+  );
+
+  output.innerHTML = errorMessages;
+};
 
 // compare points till one matches the direction. Returns directions
 const findDirection = (pointBuffer, directions) =>
@@ -85,6 +95,8 @@ function mainGame(canvas, enabled) {
   this.act1 = new Activity(stepsCanvas, enabled);
 
   const handleThisActivityClick = (sprite) => {
+    errors = [];
+    errorsOutputHandler();
     circles.forEach((sprite) => (sprite.highlight = null));
     sprite.highlight = "green";
 
@@ -175,29 +187,35 @@ function mainGame(canvas, enabled) {
   };
 
   const drawComposition = (imgPath, meshConfig) => {
-    const { startPoint, steps } = meshConfig;
+    try {
+      const { startPoint, steps } = meshConfig;
 
-    let x = startPoint[0];
-    let y = startPoint[1];
+      let x = startPoint[0];
+      let y = startPoint[1];
 
-    Object.keys(steps).map((step, index) => {
-      const direction = steps[step];
-      const koeficients = directions[direction];
+      Object.keys(steps).map((step, index) => {
+        const direction = steps[step];
+        const koeficients = directions[direction];
 
-      drawLine(imgPath, direction, [x, y]);
-      drawDirection(imgPath, direction, index);
+        drawLine(imgPath, direction, [x, y]);
+        drawDirection(imgPath, direction, index);
 
-      x += koeficients[1] * meshGap;
-      y += koeficients[0] * meshGap;
-    });
+        x += koeficients[1] * meshGap;
+        y += koeficients[0] * meshGap;
+      });
 
-    const circleIdx = this.act.sprites.findIndex(
-      (circle) => circle.x === x && circle.y === y
-    );
+      const circleIdx = this.act.sprites.findIndex(
+        (circle) => circle.x === x && circle.y === y
+      );
 
-    this.act.sprites[circleIdx].highlight = "green";
+      this.act.sprites[circleIdx].highlight = "green";
 
-    pointBuffer.push(circles[circleIdx]);
+      pointBuffer.push(circles[circleIdx]);
+    } catch (error) {
+      console.log(error);
+      errors.push("File format is incorrect or image is impossible to draw");
+      clearBoard();
+    }
   };
 
   applyBtn.addEventListener("click", async () => {
@@ -225,6 +243,10 @@ function mainGame(canvas, enabled) {
       drawComposition(imgDirPath, meshInfo);
     } catch (error) {
       console.log(error);
+      errors.push("Save file is not found");
+      console.log(errors);
+      clearBoard();
+      errorsOutputHandler();
     }
   });
 
@@ -252,5 +274,9 @@ saveBtn.addEventListener("click", async () => {
     saveNameInput.value = "";
   } catch (error) {
     console.log(error);
+    errors.push("Error while saving your progress");
+    errorsOutputHandler();
   }
 });
+
+myCanvas.addEventListener("change", errorsOutputHandler);
