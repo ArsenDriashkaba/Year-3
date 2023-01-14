@@ -18,18 +18,40 @@
     <section id="mesh-section">
       <canvas id="canvas"></canvas>
       <div id="menu">
-        <div>
-          <label for="save-name">Save name</label>
-          <input id="save-name" name="save-name" type="text" />
-          <button id="save">Save</button>
+        <div class="inputs-container">
+          <div>
+            <label for="save-name">Save name</label>
+            <input id="save-name" name="save-name" type="text" />
+            <button id="save">Save</button>
+          </div>
+          <div>
+            <input id="upload-file" type="file" />
+            <button id="apply">Apply</button>
+          </div>
+          <button id="clear">Clear board</button>
         </div>
-        <input id="upload-file" type="file" />
-        <button id="apply">Apply</button>
-        <form action=""></form>
-        <button id="clear">Clear board</button>
+
+        <div class="info">
+          <ol>
+            <li>
+              Start drawing by clicking on the board. <br />
+              The last point is always highlighted with a green square.
+            </li>
+            <li>
+              To save your drawing type the name and hit "Save" button. <br />
+              All saves you can find at "saves" folder at the project directory.
+            </li>
+            <li>
+              To load you saved drawing hit "Choose File" button,<br />
+              and find the folder described in the previous point <br />
+              Then just hit the "Apply" button and go on :) Enjoy!
+            </li>
+            <li>To clear the board just hit the "Clear board" button.</li>
+          </ol>
+        </div>
+        <ul id="vypis"></ul>
       </div>
     </section>
-    <ul id="vypis"></ul>
   </body>
 
   <script src="js/sprites2v.js"></script>

@@ -53,8 +53,6 @@ const findDirection = (pointBuffer, directions) =>
     const sprite1 = pointBuffer[0];
     const sprite2 = pointBuffer[1];
 
-    console.log({ sprite1, sprite2 });
-
     const dirCoords = directions[direction];
     const targetPoint = [sprite2.row, sprite2.column];
 
@@ -78,6 +76,11 @@ const handleNextPoint = (pointBuffer, sprite, drawDirection, drawLine) => {
       sprite.highlight = null;
       error = "You cant go there buddy";
       console.log(error);
+
+      errors.push(error);
+      errorsOutputHandler();
+
+      pointBuffer[0].highlight = "green";
 
       return;
     }
@@ -159,31 +162,45 @@ function mainGame(canvas, enabled) {
   };
 
   const drawDirection = (imgPath, direction, pos = null) => {
-    const directionImgPath = `${imgPath}/${direction}.png`;
-    const lambda = pos !== null ? pos : meshInfo.steps.length;
+    try {
+      const directionImgPath = `${imgPath}/${direction}.png`;
+      const lambda = pos !== null ? pos : meshInfo.steps.length;
 
-    const stepSprite = new Sprite(
-      this.act1,
-      directionImgPath,
-      dirStartX + lambda * 50,
-      dirStartY
-    );
+      const stepSprite = new Sprite(
+        this.act1,
+        directionImgPath,
+        dirStartX + lambda * 50,
+        dirStartY
+      );
 
-    steps.push(stepSprite);
+      steps.push(stepSprite);
+    } catch (error) {
+      console.log(error);
+      errors.push("File format is incorrect or image is impossible to draw");
+      clearBoard();
+      errorsOutputHandler();
+    }
   };
 
   const drawLine = (imgPath, direction, coords) => {
-    const lineImgPath = `${imgPath}/${direction}-RED.png`;
-    const koeficients = directions[direction];
+    try {
+      const lineImgPath = `${imgPath}/${direction}-RED.png`;
+      const koeficients = directions[direction];
 
-    const lineSprite = new Sprite(
-      this.act,
-      lineImgPath,
-      coords[0] + koeficients[1] * (meshGap / 2),
-      coords[1] + koeficients[0] * (meshGap / 2)
-    );
+      const lineSprite = new Sprite(
+        this.act,
+        lineImgPath,
+        coords[0] + koeficients[1] * (meshGap / 2),
+        coords[1] + koeficients[0] * (meshGap / 2)
+      );
 
-    lines.push(lineSprite);
+      lines.push(lineSprite);
+    } catch (error) {
+      console.log(error);
+      errors.push("File format is incorrect or image is impossible to draw");
+      clearBoard();
+      errorsOutputHandler();
+    }
   };
 
   const drawComposition = (imgPath, meshConfig) => {
@@ -215,6 +232,8 @@ function mainGame(canvas, enabled) {
       console.log(error);
       errors.push("File format is incorrect or image is impossible to draw");
       clearBoard();
+      clearBoard();
+      errorsOutputHandler();
     }
   };
 
@@ -237,8 +256,6 @@ function mainGame(canvas, enabled) {
 
       meshInfo.startPoint = startPoint;
       meshInfo.steps = steps;
-
-      console.log(meshInfo);
 
       drawComposition(imgDirPath, meshInfo);
     } catch (error) {
